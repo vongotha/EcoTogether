@@ -1,0 +1,12 @@
+# values.yaml
+global:
+  database:
+    host: "mysql-svc" # Le nom du service qu'on vient de créer
+    name: "eco_app"
+    user: "root"
+    pass: "root_password"
+
+apps:
+  auth:
+    image: eco-auth:v2
+    replicas: 1

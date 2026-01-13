@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+      - name: laravel
+        image: eco-auth:v1 # C'est l'image que tu as buildé !
+        ports:
+        - containerPort: 80
+        env:
+          - name: APP_KEY
+            value: "base64:OTZ3Ym94bmZ3bm94bmZ3bm94bmZ3bm94bmZ3bm94bno="
+        command: ["php", "-S", "0.0.0.0:80", "-t", "public"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-svc
+spec:
+  selector:
+    app: auth
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+
+containers:
+  - name: laravel
+    image: eco-auth:v1
+    env:
+    - name: APP_KEY
+      value: "u688u688u688u688u688u688u688u688"

@@ -1,0 +1,49 @@
+{{- range $name, $config := .Values.apps }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}-service
+spec:
+  replicas: {{ $config.replicas }}
+  selector:
+    matchLabels:
+      app: {{ $name }}
+  template:
+    metadata:
+      labels:
+        app: {{ $name }}
+    spec:
+      containers:
+      - name: laravel
+        image: {{ $config.image }}
+        ports:
+        - containerPort: 80
+        env:
+        - name: APP_KEY
+          value: "base64:OTZ3Ym94bmZ3bm94bmZ3bm94bmZ3bm94bmZ3bm94bno="
+        - name: DB_HOST
+          value: {{ $.Values.global.database.host }}
+        - name: DB_DATABASE
+          value: {{ $.Values.global.database.name }}
+        - name: DB_USERNAME
+          value: {{ $.Values.global.database.user }}
+        - name: DB_PASSWORD
+          value: {{ $.Values.global.database.pass }}
+        - name: SESSION_DRIVER
+          value: "cookie"
+        - name: DB_CONNECTION
+          value: "mysql"
+        command: ["php", "-S", "0.0.0.0:80", "-t", "public"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}-svc
+spec:
+  selector:
+    app: {{ $name }}
+  ports:
+    - port: 80
+      targetPort: 80
+{{- end }}
