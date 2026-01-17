@@ -8,7 +8,10 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::get('/health', fn() => response()->json(
-    ['status' => 'OK']
+    [
+        'message' => 'Service is healthy',
+        'status' => 'OK'
+    ]
 ));
 
 Route::middleware('auth:sanctum')->get('/verify', function (Request $request) {
