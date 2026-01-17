@@ -10,7 +10,8 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::get('/health', fn() => response()->json(
     [
         'message' => 'Service is healthy',
-        'status' => 'OK'
+        'status' => 'OK',
+        'time' => now()
     ]
 ));
 
